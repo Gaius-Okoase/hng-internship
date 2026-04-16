@@ -16,3 +16,21 @@ export interface FormattedRes {
     "processed_at": string
  }
 }
+
+export interface AgifyRes {
+    "count" : number,
+    "name": string,
+    "age": number
+}
+
+/* The epected fields do not need to be in quotes as long as it's a valid identifier as seen in TS Doc */
+type Country = {
+    country_id : string,
+    probability: number
+}
+
+export interface NationalizeRes {
+    count: number,
+    name: string,
+    country: Country[]
+}
