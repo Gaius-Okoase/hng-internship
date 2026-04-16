@@ -3,12 +3,15 @@ import type {Response, Request} from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import classifyRoute from './routes/classifyRoute.js';
+import profileRoute from './routes/profileRoute.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { connectToDb } from './config/db.js';
 
 const app = express();
 
 dotenv.config();
+
+connectToDb();
 
 const PORT = process.env.PORT || 4500;
 
@@ -19,7 +22,7 @@ app.use(morgan('dev'));
 app.get('/', (_req: Request, res: Response) => {
     res.send("I'm up and ready.")
 })
-app.use('/api', classifyRoute);
+app.use('/api', profileRoute);
 
 app.use(errorHandler);
 

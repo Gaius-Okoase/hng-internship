@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError.js";
 
 export const validateQuery = (req: Request, _res: Response, next: NextFunction) => {
-    const name = req.query.name;
+    const { name } = req.body as {name: string};
 
     // Verify name is present
     if(name == null || name.length === 0) {
