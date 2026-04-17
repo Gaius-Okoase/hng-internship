@@ -3,7 +3,7 @@ import { AppError } from "../utils/AppError.js";
 
 export const validateQuery = (req: Request, _res: Response, next: NextFunction) => {
     const { name } = req.body as {name: string};
-
+    
     // Verify name is present
     if(name == null || name.length === 0) {
         throw new AppError(400, "Bad Request")

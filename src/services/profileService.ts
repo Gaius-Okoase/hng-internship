@@ -24,8 +24,12 @@ const callNationalizeApi = async (name: string) => {
 }
 
 export const createProfileService = async (name: string) => {
+
+    // Ensure name is always lowecase
+    const smallName = name.toLowerCase();
+
     // Check if name already exists
-    const nameExists = await User.findOne({name: name});
+    const nameExists = await User.findOne({name: smallName}).select("-_id -__v");
     if (nameExists) {
         return {
             status: "success",
@@ -35,9 +39,9 @@ export const createProfileService = async (name: string) => {
     }
 
     //  Fetch from Genderize API
-    const genderizeRes = await callGenderizeApi(name);
-    const agifyRes = await callAgifyApi(name);
-    const nationalizeRes = await callNationalizeApi(name);
+    const genderizeRes = await callGenderizeApi(smallName);
+    const agifyRes = await callAgifyApi(smallName);
+    const nationalizeRes = await callNationalizeApi(smallName);
 
     /* Process Genderize API Result */
     // Check if gender is null or count is 0
@@ -97,7 +101,7 @@ export const createProfileService = async (name: string) => {
 
     const user = await User.create({
         id,
-        name,
+        name: smallName,
         gender,
         gender_probability,
         sample_size,
