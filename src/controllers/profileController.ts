@@ -20,9 +20,7 @@ export const getProfileController = async (req: Request, res: Response, next: Ne
 
         const profile: CreatedProfile = await getProfileService(id);
 
-        res.status(200).json({
-            profile
-        })
+        res.status(200).json(profile)
     } catch (error) {
         next(error)
     }
@@ -35,7 +33,7 @@ export const getAllProfileController = async (req: Request, res: Response, next:
 
         const allProfiles: AllUsers = await getAllProfileService(gender, age_group, country_id);
 
-        res.status(200).json({ allProfiles })
+        res.status(200).json(allProfiles)
     } catch (error) {
         next(error)
     }
