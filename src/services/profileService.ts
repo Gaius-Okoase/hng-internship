@@ -125,7 +125,7 @@ export const getProfileService = async (id : string) => {
     const profile = await User.findOne({id}).select("-_id -__v");
 
     if (!profile) {
-        throw new AppError (404, `Profile doesn't exist.`)
+        throw new AppError (404, `Profile not found`)
     }
 
     return {
@@ -149,12 +149,21 @@ export const getAllProfileService = async (gender?: string, age_group?: string, 
     if (age_group) queries.age_group = age_group.toLowerCase();
 
     // Find documents by queries
-    const profiles = await User.find(queries).select("id name gender age age_group country_id");
+    const profiles = await User.find(queries).select("id name gender age age_group country_id -_id");
     const count = profiles.length;
-    console.log(queries, queries.country_id, country_id)
+    
     return {
         status: "success",
         count,
         data: profiles
     }
+}
+
+export const deleteProfileService = async (id: string) => {
+
+    const deletedProfile = await User.deleteOne({id});
+
+    if (deletedProfile.deletedCount === 0 ) throw new AppError(404, "Profile not found");
+
+    return
 }

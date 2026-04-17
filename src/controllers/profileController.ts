@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import type { AllUsers, CreatedProfile } from "../types.js";
-import { createProfileService, getAllProfileService, getProfileService } from "../services/profileService.js";
+import { createProfileService, deleteProfileService, getAllProfileService, getProfileService } from "../services/profileService.js";
 
 export const createProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -28,7 +28,7 @@ export const getProfileController = async (req: Request, res: Response, next: Ne
     }
 }
 
-export const getAllProfileControler = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         
         const { gender, age_group, country_id } = req.query as { gender?: string, age_group?: string, country_id?: string};
@@ -36,6 +36,18 @@ export const getAllProfileControler = async (req: Request, res: Response, next: 
         const allProfiles: AllUsers = await getAllProfileService(gender, age_group, country_id);
 
         res.status(200).json({ allProfiles })
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const deleteProfileController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.params.id as string;
+
+        await deleteProfileService(id);
+
+        res.status(204).end();
     } catch (error) {
         next(error)
     }
