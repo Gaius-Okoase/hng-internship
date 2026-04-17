@@ -122,7 +122,7 @@ export const createProfileService = async (name: string) => {
 
 export const getProfileService = async (id : string) => {
 
-    const profile = await User.findOne({id}).select("-_id -__v");
+    const profile = await User.findOne({_id: id}).select("-_id -__v");
 
     if (!profile) {
         throw new AppError (404, `Profile not found`)
@@ -161,7 +161,7 @@ export const getAllProfileService = async (gender?: string, age_group?: string, 
 
 export const deleteProfileService = async (id: string) => {
 
-    const deletedProfile = await User.deleteOne({id});
+    const deletedProfile = await User.deleteOne({_id: id});
 
     if (deletedProfile.deletedCount === 0 ) throw new AppError(404, "Profile not found");
 
