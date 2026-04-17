@@ -99,7 +99,7 @@ export const createProfileService = async (name: string) => {
     const id = uuidv7();
     const created_at = new Date().toISOString();
 
-    const user = await User.create({
+    const profile = await User.create({
         id,
         name: smallName,
         gender,
@@ -112,10 +112,25 @@ export const createProfileService = async (name: string) => {
         created_at
     })
 
-    await user.save()
+    await profile.save()
 
     return {
         status: "success",
-        data: user
+        data: profile
     }
+}
+
+export const getProfileService = async (id : string) => {
+
+    const profile = await User.findOne({id}).select("-_id -__v");
+
+    if (!profile) {
+        throw new AppError (404, `Profile doesn't exist.`)
+    }
+
+    return {
+        status: "success",
+        data: profile
+    }
+
 }
