@@ -52,3 +52,18 @@ export interface IUser {
     country_probability: number,
     created_at: string
 }
+
+interface UserObject {
+    "id": string,
+    "name": string,
+    "gender": string,
+    "age": number,
+    "age_group": string,
+    "country_id": string
+}
+
+export interface AllUsers {
+    "status": string,
+    "count": number,
+    "data": UserObject[]
+}

@@ -134,3 +134,27 @@ export const getProfileService = async (id : string) => {
     }
 
 }
+
+export const getAllProfileService = async (gender?: string, age_group?: string, country_id?: string) => {
+    // Initialize queries object for optional query parameters
+    const queries: {
+        gender?: string,
+        country_id?: string,
+        age_group?: string
+    } = {}
+
+    // Pass query arguments to the queries objects if available
+    if (gender) queries.gender = gender.toLocaleLowerCase();
+    if (country_id) queries.country_id = country_id.toUpperCase();
+    if (age_group) queries.age_group = age_group.toLowerCase();
+
+    // Find documents by queries
+    const profiles = await User.find(queries).select("id name gender age age_group country_id");
+    const count = profiles.length;
+    console.log(queries, queries.country_id, country_id)
+    return {
+        status: "success",
+        count,
+        data: profiles
+    }
+}
