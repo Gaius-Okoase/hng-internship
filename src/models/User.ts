@@ -4,7 +4,8 @@ import type { IUser } from "../types.js";
 export const userSchema = new mongoose.Schema<IUser, mongoose.Model<IUser>>({
     id :{
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,
