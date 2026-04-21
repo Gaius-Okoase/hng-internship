@@ -9,17 +9,14 @@ export const userSchema = new mongoose.Schema<IUser, mongoose.Model<IUser>>({
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     gender: {
         type: String,
         required: true
     },
     gender_probability: {
-        type: Number,
-        required: true
-    },
-    sample_size: {
         type: Number,
         required: true
     },
@@ -33,6 +30,10 @@ export const userSchema = new mongoose.Schema<IUser, mongoose.Model<IUser>>({
         required: true
     },
     country_id: {
+        type: String,
+        required: true
+    },
+    country_name: {
         type: String,
         required: true
     },

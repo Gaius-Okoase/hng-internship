@@ -49,6 +49,7 @@ export interface IUser {
     age: number,
     age_group: "child" | "teenager" | "adult" | "senior",
     country_id: string,
+    country_name: string,
     country_probability: number,
     created_at: string
 }
