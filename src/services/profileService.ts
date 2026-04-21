@@ -1,8 +1,9 @@
 import axios from 'axios';
-import type { GenderizeRes, AgifyRes, NationalizeRes } from "../types.js";
+import type { GenderizeRes, AgifyRes, NationalizeRes, ProfileFilters, IUser } from "../types.js";
 import { v7 as uuidv7 } from "uuid";
 import { AppError } from '../utils/AppError.js';
 import { User } from '../models/User.js';
+import type { QueryFilter } from 'mongoose';
 
 // Funtions to call external APIs
 const callGenderizeApi = async (name: string) => { 
@@ -135,21 +136,24 @@ export const getProfileService = async (id : string) => {
 
 }
 
-export const getAllProfileService = async (gender?: string, age_group?: string, country_id?: string) => {
+export const getAllProfileService = async (profileFilters: ProfileFilters) => {
     // Initialize queries object for optional query parameters
-    const queries: {
-        gender?: string,
-        country_id?: string,
-        age_group?: string
-    } = {}
+    const filters: QueryFilter<IUser> = {}
 
-    // Pass query arguments to the queries objects if available
-    if (gender) queries.gender = gender.toLocaleLowerCase();
-    if (country_id) queries.country_id = country_id.toUpperCase();
-    if (age_group) queries.age_group = age_group.toLowerCase();
+    // Pass profile filter arguments to the filters objects if available
+    if (profileFilters.gender) filters.gender = profileFilters.gender.toLocaleLowerCase();
+    if (profileFilters.country_id) filters.country_id = profileFilters.country_id.toUpperCase();
+    if (profileFilters.age_group) filters.age_group = profileFilters.age_group.toLowerCase();
+    if (profileFilters.max_age || profileFilters.min_age) {
+        filters.age = {};
+        if(profileFilters.max_age) filters.age.$lte = Number(profileFilters.max_age);
+        if(profileFilters.min_age) filters.age.$gte = Number(profileFilters.min_age);
+    }
+    if (profileFilters.min_country_probability) filters.country_probability = {$gte: Number(profileFilters.min_country_probability)};
+    if (profileFilters.min_gender_probability) filters.gender_probability = {$gte: Number(profileFilters.min_gender_probability)};
 
     // Find documents by queries
-    const profiles = await User.find(queries).select("id name gender age age_group country_id -_id");
+    const profiles = await User.find(filters).select("-__v -_id");
     const count = profiles.length;
     
     return {

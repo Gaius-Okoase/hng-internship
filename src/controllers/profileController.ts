@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AllUsers, CreatedProfile } from "../types.js";
+import type { AllUsers, CreatedProfile, ProfileFilters } from "../types.js";
 import { createProfileService, deleteProfileService, getAllProfileService, getProfileService } from "../services/profileService.js";
 
 export const createProfileController = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,10 +28,27 @@ export const getProfileController = async (req: Request, res: Response, next: Ne
 
 export const getAllProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { 
+            gender, 
+            age_group, 
+            country_id, 
+            min_age, 
+            max_age,
+            min_country_probability,
+            min_gender_probability, 
+        }: ProfileFilters = req.query;
         
-        const { gender, age_group, country_id } = req.query as { gender?: string, age_group?: string, country_id?: string};
+        const queries = {
+            gender, 
+            age_group, 
+            country_id, 
+            min_age, 
+            max_age, 
+            min_country_probability,
+            min_gender_probability
+        };
 
-        const allProfiles: AllUsers = await getAllProfileService(gender, age_group, country_id);
+        const allProfiles: AllUsers = await getAllProfileService(queries);
 
         res.status(200).json(allProfiles)
     } catch (error) {
