@@ -1,5 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AllUsers, CreatedProfile, ProfileFilters } from "../types.js";
+import type { AllUsers, CreatedProfile } from "../types.js";
+import zod from "zod";
+import { QueryOptionsSchema } from "../zod_schema/filterSchema.js";
 import { createProfileService, deleteProfileService, getAllProfileService, getProfileService } from "../services/profileService.js";
 
 export const createProfileController = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,9 +30,11 @@ export const getProfileController = async (req: Request, res: Response, next: Ne
 
 export const getAllProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const profileFilters: ProfileFilters = req.query;
+        type QueryOptionsSchema = zod.infer<typeof QueryOptionsSchema>;
 
-        const allProfiles: AllUsers = await getAllProfileService(profileFilters);
+        const query: QueryOptionsSchema = req.query;
+
+        const allProfiles: AllUsers = await getAllProfileService(query);
 
         res.status(200).json(allProfiles)
     } catch (error) {

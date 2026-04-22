@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError.js";
 import zod from "zod";
-import { FilterOptionsSchema } from "../zod_schema/filterSchema.js";
+import { QueryOptionsSchema } from "../zod_schema/filterSchema.js";
 
 export const validateBody = (req: Request, _res: Response, next: NextFunction) => {
     const { name } = req.body as {name: string};
@@ -20,11 +20,11 @@ export const validateBody = (req: Request, _res: Response, next: NextFunction) =
 }
 
 export const validateQuery = (req: Request, _res: Response, next: NextFunction) => {
-    type FilterOptionsSchema = zod.infer<typeof FilterOptionsSchema>;
+    type QueryOptionsSchema = zod.infer<typeof QueryOptionsSchema>;
 
-    const filterOptions: FilterOptionsSchema = req.query;
+    const filterOptions: QueryOptionsSchema = req.query;
 
-    const result = FilterOptionsSchema.safeParse(filterOptions);
+    const result = QueryOptionsSchema.safeParse(filterOptions);
 
     if (!result.success) return next(result.error)
 

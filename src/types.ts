@@ -69,12 +69,3 @@ export interface AllUsers {
     "data": UserObject[]
 }
 
-export interface ProfileFilters {
-    gender?: string | undefined,
-    age_group?: string | undefined,
-    country_id?: string | undefined,
-    min_age?: string | undefined,
-    max_age?: string | undefined,
-    min_gender_probability?: string | undefined,
-    min_country_probability?: string | undefined
-}

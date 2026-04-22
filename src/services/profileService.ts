@@ -1,9 +1,14 @@
 import axios from 'axios';
-import type { GenderizeRes, AgifyRes, NationalizeRes, ProfileFilters, IUser } from "../types.js";
+import zod from 'zod';
+import { QueryOptionsSchema } from '../zod_schema/filterSchema.js';
+import type { GenderizeRes, AgifyRes, NationalizeRes, IUser } from "../types.js";
 import { v7 as uuidv7 } from "uuid";
 import { AppError } from '../utils/AppError.js';
 import { User } from '../models/User.js';
 import type { QueryFilter } from 'mongoose';
+
+// infer query types using zod schema
+type QueryOptionsSchema = zod.infer<typeof QueryOptionsSchema>;
 
 // Funtions to call external APIs
 const callGenderizeApi = async (name: string) => { 
@@ -136,24 +141,25 @@ export const getProfileService = async (id : string) => {
 
 }
 
-export const getAllProfileService = async (profileFilters: ProfileFilters) => {
+export const getAllProfileService = async (query: QueryOptionsSchema) => {
     // Initialize queries object for optional query parameters
-    const filters: QueryFilter<IUser> = {}
+    const queryFilters: QueryFilter<IUser> = {}
 
     // Pass profile filter arguments to the filters objects if available
-    if (profileFilters.gender) filters.gender = profileFilters.gender.toLocaleLowerCase();
-    if (profileFilters.country_id) filters.country_id = profileFilters.country_id.toUpperCase();
-    if (profileFilters.age_group) filters.age_group = profileFilters.age_group.toLowerCase();
-    if (profileFilters.max_age || profileFilters.min_age) {
-        filters.age = {};
-        if(profileFilters.max_age) filters.age.$lte = Number(profileFilters.max_age);
-        if(profileFilters.min_age) filters.age.$gte = Number(profileFilters.min_age);
+    if (query.gender) queryFilters.gender = query.gender.toLocaleLowerCase();
+    if (query.country_id) queryFilters.country_id = query.country_id.toUpperCase();
+    if (query.age_group) queryFilters.age_group = query.age_group.toLowerCase();
+    if (query.max_age || query.min_age) {
+        queryFilters.age = {};
+        if(query.max_age) queryFilters.age.$lte = Number(query.max_age);
+        if(query.min_age) queryFilters.age.$gte = Number(query.min_age);
     }
-    if (profileFilters.min_country_probability) filters.country_probability = {$gte: Number(profileFilters.min_country_probability)};
-    if (profileFilters.min_gender_probability) filters.gender_probability = {$gte: Number(profileFilters.min_gender_probability)};
+    if (query.min_country_probability)queryFilters.country_probability = {$gte: Number(query.min_country_probability)};
+    if (query.min_gender_probability) queryFilters.gender_probability = {$gte: Number(query.min_gender_probability)};
 
+    
     // Find documents by queries
-    const profiles = await User.find(filters).select("-__v -_id");
+    const profiles = await User.find(queryFilters).select("-__v -_id");
     const count = profiles.length;
     
     return {

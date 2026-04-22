@@ -1,13 +1,16 @@
 import zod from "zod";
 
-export const FilterOptionsSchema = zod.object({
+export const QueryOptionsSchema = zod.object({
     gender: zod.optional(zod.string()),
     age_group: zod.optional(zod.string()),
     country_id: zod.optional(zod.string()),
     min_age: zod.optional(zod.coerce.number().min(1)),
     max_age: zod.optional(zod.coerce.number().min(1)),
     min_gender_probability: zod.optional(zod.coerce.number().min(0)),
-    min_country_probability: zod.optional(zod.coerce.number().min(0))
+    min_country_probability: zod.optional(zod.coerce.number().min(0)),
+    sort_by: zod.optional(zod.string()),
+    page: zod.optional(zod.coerce.number().min(1)),
+    limit: zod.optional(zod.coerce.number().min(10).max(50))
 })
 
 /*
