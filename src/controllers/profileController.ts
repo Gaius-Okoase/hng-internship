@@ -28,27 +28,9 @@ export const getProfileController = async (req: Request, res: Response, next: Ne
 
 export const getAllProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { 
-            gender, 
-            age_group, 
-            country_id, 
-            min_age, 
-            max_age,
-            min_country_probability,
-            min_gender_probability, 
-        }: ProfileFilters = req.query;
-        
-        const queries = {
-            gender, 
-            age_group, 
-            country_id, 
-            min_age, 
-            max_age, 
-            min_country_probability,
-            min_gender_probability
-        };
+        const profileFilters: ProfileFilters = req.query;
 
-        const allProfiles: AllUsers = await getAllProfileService(queries);
+        const allProfiles: AllUsers = await getAllProfileService(profileFilters);
 
         res.status(200).json(allProfiles)
     } catch (error) {

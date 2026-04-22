@@ -1,5 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError.js";
+import zod from "zod";
+import { FilterOptionsSchema } from "../zod_schema/filterSchema.js";
 
 export const validateBody = (req: Request, _res: Response, next: NextFunction) => {
     const { name } = req.body as {name: string};
@@ -9,10 +11,22 @@ export const validateBody = (req: Request, _res: Response, next: NextFunction) =
         throw new AppError(400, "Bad Request")
     }
     
-    // Verify name is not an array.
+    // Verify name is not an array
     if (Array.isArray(name) || !isNaN(Number(name))) {
         throw new AppError(422, "Unprocessible entity")
     }
 
     return next()
+}
+
+export const validateQuery = (req: Request, _res: Response, next: NextFunction) => {
+    type FilterOptionsSchema = zod.infer<typeof FilterOptionsSchema>;
+
+    const filterOptions: FilterOptionsSchema = req.query;
+
+    const result = FilterOptionsSchema.safeParse(filterOptions);
+
+    if (!result.success) return next(result.error)
+
+    return next();
 }

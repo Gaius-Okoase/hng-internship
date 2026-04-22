@@ -13,7 +13,6 @@ export const connectToDb = async () => {
         return mongoose.connection;
     } catch (error) {
         console.error(error instanceof MongooseError ? error.message : 'Failed to connect to DB');
-        throw new MongooseError(`Failed to connect to Database`);
         process.exit(1)
     }
 }
