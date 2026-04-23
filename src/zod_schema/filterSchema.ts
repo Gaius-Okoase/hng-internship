@@ -8,19 +8,14 @@ export const QueryOptionsSchema = zod.object({
     max_age: zod.optional(zod.coerce.number().min(1)),
     min_gender_probability: zod.optional(zod.coerce.number().min(0)),
     min_country_probability: zod.optional(zod.coerce.number().min(0)),
-    sort_by: zod.optional(zod.string()),
+    sort_by: zod.optional(zod.preprocess(
+        (val) => (typeof val === "string" ? val.toLowerCase() : val),
+        zod.literal(["age", "created_at", "gender_probability"])
+    )),
+    order: zod.optional(zod.preprocess(
+        (val) => (typeof val === "string" ? val.toLowerCase() : val),
+        zod.literal(["asc", "desc"])
+    )),
     page: zod.optional(zod.coerce.number().min(1)),
     limit: zod.optional(zod.coerce.number().min(10).max(50))
 })
-
-/*
-export interface ProfileFilters {
-     gender?: string | undefined,
-     age_group?: string | undefined,
-     country_id?: string | undefined,
-     min_age?: string | undefined,
-     max_age?: string | undefined,
-     min_gender_probability?: string | undefined,
-     min_country_probability?: string | undefined
- }
- */

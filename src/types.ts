@@ -69,3 +69,21 @@ export interface AllUsers {
     "data": UserObject[]
 }
 
+
+export interface QueryOptionsSchema {
+    gender?: string | undefined;
+    age_group?: string | undefined;
+    country_id?: string | undefined;
+    min_age?: number | undefined;
+    max_age?: number | undefined;
+    min_gender_probability?: number | undefined;
+    min_country_probability?: number | undefined;
+    sort_by?: "age" | "created_at" | "gender_probability" | undefined;
+    order?: "asc" | "desc" | undefined;
+    page?: number | undefined;
+    limit?: number | undefined;
+}
+export interface Sort {
+    "field": string,
+    "order": 1 | -1
+}

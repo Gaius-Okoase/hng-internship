@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import type { AllUsers, CreatedProfile } from "../types.js";
-import zod from "zod";
-import { QueryOptionsSchema } from "../zod_schema/filterSchema.js";
+import type { CreatedProfile } from "../types.js";
+import type { QueryOptionsSchema } from "../types.js";
 import { createProfileService, deleteProfileService, getAllProfileService, getProfileService } from "../services/profileService.js";
 
 export const createProfileController = async (req: Request, res: Response, next: NextFunction) => {
@@ -30,11 +29,9 @@ export const getProfileController = async (req: Request, res: Response, next: Ne
 
 export const getAllProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        type QueryOptionsSchema = zod.infer<typeof QueryOptionsSchema>;
-
         const query: QueryOptionsSchema = req.query;
 
-        const allProfiles: AllUsers = await getAllProfileService(query);
+        const allProfiles = await getAllProfileService(query);
 
         res.status(200).json(allProfiles)
     } catch (error) {
@@ -47,7 +44,7 @@ export const deleteProfileController = async (req: Request, res: Response, next:
         const id = req.params.id as string;
 
         await deleteProfileService(id);
-
+            
         res.status(204).end();
     } catch (error) {
         next(error)
