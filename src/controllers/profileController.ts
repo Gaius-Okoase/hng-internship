@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type { CreatedProfile } from "../types.js";
 import type { QueryOptionsSchema } from "../types.js";
-import { createProfileService, deleteProfileService, getAllProfileService, getProfileService } from "../services/profileService.js";
+import { createProfileService, deleteProfileService, getAllProfileService, getProfilesByNaturalQuerySearchService, getProfileService } from "../services/profileService.js";
 
 export const createProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -46,6 +46,18 @@ export const deleteProfileController = async (req: Request, res: Response, next:
         await deleteProfileService(id);
             
         res.status(204).end();
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getProfilesByNaturalQuerySearchController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const query = req.query.q as string;
+
+        const profiles = await getProfilesByNaturalQuerySearchService(query);
+
+        res.status(200).json({profiles});
     } catch (error) {
         next(error)
     }
