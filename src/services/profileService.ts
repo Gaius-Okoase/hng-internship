@@ -194,9 +194,9 @@ export const deleteProfileService = async (id: string) => {
 }
 
 // Create a Query Parser function that parses string into respective filter options
-const naturalQueryParser = async (query: string) => {
+const naturalQueryParser = async (query: QueryOptionsSchema) => {
     // Convert string to lowercase
-    const lowQuery = query.toLowerCase();
+    const lowQuery: string = query.q ? query.q.toLowerCase() : "";
 
     // Initialize filters object
     const filters: QueryOptionsSchema = {};
@@ -238,11 +238,17 @@ const naturalQueryParser = async (query: string) => {
     const belowMatch = lowQuery.match(/below\s+(\d+)/i);
     if (belowMatch) filters.max_age = Number(belowMatch[1]);
 
+    // Pass sorting arguments and pagination arguments
+    if (query.sort_by) filters.sort_by = query.sort_by;
+    if (query.order) filters.order = query.order;
+    if(query.page) filters.page = Number(query.page);
+    if(query.limit) filters.limit = Number(query.limit);
+
     return filters;
 }
 
 // Get profiles by filter options from parsed query strings
-export const getProfilesByNaturalQuerySearchService = async (query: string) => {
+export const getProfilesByNaturalQuerySearchService = async (query: QueryOptionsSchema) => {
 
     const filters = await naturalQueryParser(query)
 

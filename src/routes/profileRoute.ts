@@ -8,6 +8,6 @@ router.post('/profiles', validateBody, createProfileController);
 //router.get('/profiles/:id', getProfileController);
 router.get('/profiles', validateQuery, getAllProfileController);
 router.delete('/profiles/:id', deleteProfileController);
-router.get('/profiles/search', getProfilesByNaturalQuerySearchController);
+router.get('/profiles/search', validateQuery, getProfilesByNaturalQuerySearchController);
 
 export default router;

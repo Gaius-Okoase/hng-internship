@@ -53,7 +53,7 @@ export const deleteProfileController = async (req: Request, res: Response, next:
 
 export const getProfilesByNaturalQuerySearchController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const query = req.query.q as string;
+        const query: QueryOptionsSchema = req.query;
 
         const profiles = await getProfilesByNaturalQuerySearchService(query);
 

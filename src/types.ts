@@ -71,6 +71,7 @@ export interface AllUsers {
 
 
 export interface QueryOptionsSchema {
+    q?: string | undefined
     gender?: string | undefined;
     age_group?: string | undefined;
     country_id?: string | undefined;

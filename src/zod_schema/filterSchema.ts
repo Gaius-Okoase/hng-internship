@@ -1,6 +1,7 @@
 import zod from "zod";
 
 export const QueryOptionsSchema = zod.object({
+    q: zod.optional(zod.string()),
     gender: zod.optional(zod.string()),
     age_group: zod.optional(zod.string()),
     country_id: zod.optional(zod.string()),
