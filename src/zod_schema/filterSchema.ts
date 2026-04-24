@@ -18,5 +18,5 @@ export const QueryOptionsSchema = zod.object({
         zod.literal(["asc", "desc"])
     )),
     page: zod.optional(zod.coerce.number().min(1)),
-    limit: zod.optional(zod.coerce.number().min(10).max(50))
+    limit: zod.optional(zod.coerce.number().min(1).max(50))
 })

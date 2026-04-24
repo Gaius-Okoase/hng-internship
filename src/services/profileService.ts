@@ -229,7 +229,7 @@ const naturalQueryParser = async (query: QueryOptionsSchema) => {
     if(match) filters.country_id = match.country_id;
 
     // Create filter option for "young"
-    if(lowQuery.includes("young")) filters.min_age = 16; filters.max_age = 24;
+    if(lowQuery.includes("young")) {filters.min_age = 16; filters.max_age = 24;}
 
     // Create filter options for above and below certain ages
     const aboveMatch = lowQuery.match(/above\s+(\d+)/i)
@@ -243,6 +243,15 @@ const naturalQueryParser = async (query: QueryOptionsSchema) => {
     if (query.order) filters.order = query.order;
     if(query.page) filters.page = Number(query.page);
     if(query.limit) filters.limit = Number(query.limit);
+    
+    if (
+        !filters.age_group && 
+        !filters.country_id && 
+        !filters.gender &&
+        !filters.max_age &&
+        !filters.min_age
+    ) throw new AppError (422, "Unable to interpret query");
+    console.log(filters)
 
     return filters;
 }
