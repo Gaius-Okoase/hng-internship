@@ -57,7 +57,7 @@ export const getProfilesByNaturalQuerySearchController = async (req: Request, re
 
         const profiles = await getProfilesByNaturalQuerySearchService(query);
 
-        res.status(200).json({profiles});
+        res.status(200).json(profiles);
     } catch (error) {
         next(error)
     }

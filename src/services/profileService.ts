@@ -201,7 +201,7 @@ const naturalQueryParser = async (query: QueryOptionsSchema) => {
     // Initialize filters object
     const filters: QueryOptionsSchema = {};
 
-    // Create my own allowed vocabularies   
+    // Create  allowed vocabularies   
     const maleWords: string[] = ["male", "males", "boys", "men", "man", "boy"];
     const femaleWords: string[] = ["female", "females", "girl", "girls", "woman", "women"];
     const childWords: string[] = ["child", "children", "baby", "babies", "kid", "kids"];
@@ -213,7 +213,7 @@ const naturalQueryParser = async (query: QueryOptionsSchema) => {
     // Split the string into an array of each word to avoid of conflict of words like "male" and "female"   
     const words: string[] = lowQuery.split(" ");
 
-    // Create filter options by checking word array against expected vocabularies using .some()   
+    // Create filter options by checking word array against expected vocabularies   
     if (words.some(w => maleWords.includes(w))) filters.gender = "male";
     if (words.some(w => femaleWords.includes(w))) filters.gender = "female";
     if (words.some(w => skipGenderWords.includes(w))) filters.gender = undefined;
