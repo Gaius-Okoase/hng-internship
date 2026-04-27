@@ -1,90 +1,88 @@
 export interface GenderizeRes {
-    "count": number,
-    "name": string,
-    "gender": string | null,
-    "probability": number
+  count: number;
+  name: string;
+  gender: string | null;
+  probability: number;
 }
 
 export interface CreatedProfile {
-
-  status: string,
+  status: string;
   data: {
-    id: string,
-    name: string,
-    gender: string,
-    gender_probability: number,
-    sample_size: number,
-    age: number,
-    age_group: "child" | "teenager" | "adult" | "senior",
-    country_id: string,
-    country_probability: number,
-    created_at: string
-  }
+    id: string;
+    name: string;
+    gender: string;
+    gender_probability: number;
+    sample_size: number;
+    age: number;
+    age_group: 'child' | 'teenager' | 'adult' | 'senior';
+    country_id: string;
+    country_probability: number;
+    created_at: string;
+  };
 }
 
 export interface AgifyRes {
-    "count" : number,
-    "name": string,
-    "age": number
+  count: number;
+  name: string;
+  age: number;
 }
 
 /* The epected fields do not need to be in quotes as long as it's a valid identifier as seen in TS Doc */
 type Country = {
-    country_id : string,
-    probability: number
-}
+  country_id: string;
+  probability: number;
+};
 
 export interface NationalizeRes {
-    count: number,
-    name: string,
-    country: Country[]
+  count: number;
+  name: string;
+  country: Country[];
 }
 
 export interface IUser {
-    id: string,
-    name: string,
-    gender: string,
-    gender_probability: number,
-    sample_size: number,
-    age: number,
-    age_group: "child" | "teenager" | "adult" | "senior",
-    country_id: string,
-    country_name: string,
-    country_probability: number,
-    created_at: string
+  id: string;
+  name: string;
+  gender: string;
+  gender_probability: number;
+  sample_size: number;
+  age: number;
+  age_group: 'child' | 'teenager' | 'adult' | 'senior';
+  country_id: string;
+  country_name: string;
+  country_probability: number;
+  created_at: string;
 }
 
 interface UserObject {
-    "id": string,
-    "name": string,
-    "gender": string,
-    "age": number,
-    "age_group": string,
-    "country_id": string
+  id: string;
+  name: string;
+  gender: string;
+  age: number;
+  age_group: string;
+  country_id: string;
 }
 
 export interface AllUsers {
-    "status": string,
-    "count": number,
-    "data": UserObject[]
+  status: string;
+  count: number;
+  data: UserObject[];
 }
-
 
 export interface QueryOptionsSchema {
-    q?: string | undefined
-    gender?: string | undefined;
-    age_group?: string | undefined;
-    country_id?: string | undefined;
-    min_age?: number | undefined;
-    max_age?: number | undefined;
-    min_gender_probability?: number | undefined;
-    min_country_probability?: number | undefined;
-    sort_by?: "age" | "created_at" | "gender_probability" | undefined;
-    order?: "asc" | "desc" | undefined;
-    page?: number | undefined;
-    limit?: number | undefined;
+  q?: string | undefined;
+  gender?: string | undefined;
+  age_group?: string | undefined;
+  country_id?: string | undefined;
+  min_age?: number | undefined;
+  max_age?: number | undefined;
+  min_gender_probability?: number | undefined;
+  min_country_probability?: number | undefined;
+  sort_by?: 'age' | 'created_at' | 'gender_probability' | undefined;
+  order?: 'asc' | 'desc' | undefined;
+  page?: number | undefined;
+  limit?: number | undefined;
 }
 export interface Sort {
-    "field": string,
-    "order": 1 | -1
+  field: string;
+  order: 1 | -1;
 }

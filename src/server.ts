@@ -1,5 +1,5 @@
 import express from 'express';
-import type {Response, Request} from 'express';
+import type { Response, Request } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
@@ -16,16 +16,16 @@ connectToDb();
 const PORT = process.env.PORT || 4500;
 
 app.use(express.json());
-app.use(cors({origin: "*"}));
+app.use(cors({ origin: '*' }));
 app.use(morgan('dev'));
 
 app.get('/', (_req: Request, res: Response) => {
-    res.send("I'm up and ready.")
-})
+  res.send("I'm up and ready.");
+});
 app.use('/api', profileRoute);
 
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-    console.log(`Server running on localhost:${PORT}`) 
+  console.log(`Server running on localhost:${PORT}`);
 });
