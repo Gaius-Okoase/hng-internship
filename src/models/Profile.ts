@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import type { IProfile } from '../types.js';
 
-export const profileSchema = new mongoose.Schema<IProfile, mongoose.Model<IProfile>>({
+const profileSchema = new mongoose.Schema<IProfile, mongoose.Model<IProfile>>({
   id: {
     type: String,
     required: true,

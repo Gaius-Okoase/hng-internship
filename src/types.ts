@@ -53,19 +53,16 @@ export interface IProfile {
   created_at: string;
 }
 
-interface ProfileObject {
+export interface IUser {
   id: string;
-  name: string;
-  gender: string;
-  age: number;
-  age_group: string;
-  country_id: string;
-}
-
-export interface AllProfiles {
-  status: string;
-  count: number;
-  data: ProfileObject[];
+  github_id: string,
+  username: string;
+  email: string;
+  avatar_url: string;
+  role: 'admin' | 'analyst';
+  is_active: boolean;
+  last_login_at: Date;
+  created_at: Date;
 }
 
 export interface QueryOptionsSchema {
