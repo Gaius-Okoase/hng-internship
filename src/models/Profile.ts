@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import type { IUser } from '../types.js';
+import type { IProfile } from '../types.js';
 
-export const userSchema = new mongoose.Schema<IUser, mongoose.Model<IUser>>({
+export const profileSchema = new mongoose.Schema<IProfile, mongoose.Model<IProfile>>({
   id: {
     type: String,
     required: true,
@@ -47,4 +47,4 @@ export const userSchema = new mongoose.Schema<IUser, mongoose.Model<IUser>>({
   },
 });
 
-export const User = mongoose.model('User', userSchema);
+export const Profile = mongoose.model('Profile', profileSchema);

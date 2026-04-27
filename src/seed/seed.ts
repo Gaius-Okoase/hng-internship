@@ -5,7 +5,7 @@ import { v7 as uuidv7 } from 'uuid';
 import dotenv from 'dotenv';
 import seeds from './seed_profiles.json' with { type: 'json' };
 import mongoose from 'mongoose';
-import { User } from '../models/User.js';
+import { Profile } from '../models/Profile.js';
 
 dotenv.config();
 
@@ -28,10 +28,10 @@ const seedDB = async () => {
     await mongoose.connect(mongoUri);
     console.log('Successfully connected to DB');
 
-    await User.deleteMany({});
+    await Profile.deleteMany({});
     console.log(`DB cleared successfully`);
 
-    await User.insertMany(completeSeedArr);
+    await Profile.insertMany(completeSeedArr);
     console.log(`DB seeded successfully`);
 
     await mongoose.connection.close();

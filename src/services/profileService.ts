@@ -4,12 +4,12 @@ import type {
   GenderizeRes,
   AgifyRes,
   NationalizeRes,
-  IUser,
+  IProfile,
   Sort,
 } from '../types.js';
 import { v7 as uuidv7 } from 'uuid';
 import { AppError } from '../utils/AppError.js';
-import { User } from '../models/User.js';
+import { Profile } from '../models/Profile.js';
 import type { QueryFilter } from 'mongoose';
 
 // Funtions to call external APIs
@@ -36,7 +36,7 @@ export const createProfileService = async (name: string) => {
   const smallName = name.toLowerCase();
 
   // Check if name already exists
-  const nameExists = await User.findOne({ name: smallName }).select(
+  const nameExists = await Profile.findOne({ name: smallName }).select(
     '-_id -__v'
   );
   if (nameExists) {
@@ -107,7 +107,7 @@ export const createProfileService = async (name: string) => {
   const id = uuidv7();
   const created_at = new Date().toISOString();
 
-  const profile = await User.create({
+  const profile = await Profile.create({
     id,
     name: smallName,
     gender,
@@ -129,7 +129,7 @@ export const createProfileService = async (name: string) => {
 };
 
 export const getProfileService = async (id: string) => {
-  const profile = await User.findOne({ id }).select('-_id -__v');
+  const profile = await Profile.findOne({ id }).select('-_id -__v');
 
   if (!profile) {
     throw new AppError(404, `Profile not found`);
@@ -143,7 +143,7 @@ export const getProfileService = async (id: string) => {
 
 export const getAllProfileService = async (query: QueryOptionsSchema) => {
   // Initialize filters object for optional filter arguments
-  const filters: QueryFilter<IUser> = {};
+  const filters: QueryFilter<IProfile> = {};
 
   // Pass filter arguments to the filters objects if available
   if (query.gender) filters.gender = query.gender.toLocaleLowerCase();
@@ -176,13 +176,13 @@ export const getAllProfileService = async (query: QueryOptionsSchema) => {
   const page = Number(query.page) || 1;
 
   // Find documents by queries
-  const profiles = await User.find(filters)
+  const profiles = await Profile.find(filters)
     .select('-__v -_id')
     .sort({ [field]: order })
     .skip((page - 1) * limit)
     .limit(limit);
 
-  const total = await User.countDocuments(filters);
+  const total = await Profile.countDocuments(filters);
 
   return {
     status: 'success',
@@ -194,7 +194,7 @@ export const getAllProfileService = async (query: QueryOptionsSchema) => {
 };
 
 export const deleteProfileService = async (id: string) => {
-  const deletedProfile = await User.deleteOne({ id });
+  const deletedProfile = await Profile.deleteOne({ id });
 
   if (deletedProfile.deletedCount === 0)
     throw new AppError(404, 'Profile not found');
@@ -254,7 +254,7 @@ const naturalQueryParser = async (query: QueryOptionsSchema) => {
   if (words.some((w) => seniorWords.includes(w))) filters.age_group = 'senior';
 
   // Get all available country_name and country_id from the DB
-  const country = await User.find().select('country_name country_id -_id');
+  const country = await Profile.find().select('country_name country_id -_id');
   // Check if query string contains any country_name and pass id to filters object
   const match = country.find((c) =>
     lowQuery.includes(c.country_name.toLowerCase())

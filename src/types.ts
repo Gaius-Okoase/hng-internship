@@ -39,7 +39,7 @@ export interface NationalizeRes {
   country: Country[];
 }
 
-export interface IUser {
+export interface IProfile {
   id: string;
   name: string;
   gender: string;
@@ -53,7 +53,7 @@ export interface IUser {
   created_at: string;
 }
 
-interface UserObject {
+interface ProfileObject {
   id: string;
   name: string;
   gender: string;
@@ -62,10 +62,10 @@ interface UserObject {
   country_id: string;
 }
 
-export interface AllUsers {
+export interface AllProfiles {
   status: string;
   count: number;
-  data: UserObject[];
+  data: ProfileObject[];
 }
 
 export interface QueryOptionsSchema {
