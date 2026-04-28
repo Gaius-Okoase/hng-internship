@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import profileRoute from './routes/profileRoute.js';
+import authRoute from './routes/authRoute.js'
 import { errorHandler } from './middleware/errorHandler.js';
 import { connectToDb } from './config/db.js';
 
@@ -22,7 +23,8 @@ app.use(morgan('dev'));
 app.get('/', (_req: Request, res: Response) => {
   res.send("I'm up and ready.");
 });
-app.use('/api', profileRoute);
+app.use('/api', profileRoute)
+app.use('/auth', authRoute);
 
 app.use(errorHandler);
 

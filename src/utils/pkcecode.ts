@@ -11,3 +11,9 @@ export const generateCodeChallenge = (code_verifier: string) => {
 
     return hash;
 }
+
+export const generateState = () => {
+    const state = randomBytes(16).toString('base64url')
+
+    return state;
+}
